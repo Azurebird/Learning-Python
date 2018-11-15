@@ -3,7 +3,7 @@ import sys
 if len(sys.argv) != 4:
     raise SystemExit("Usage: ioTutorial.py principal rate time")
 
-principal = float(sys.argv[1])
+principal = float(sys.argv[1]) sdfsd
 rate = float(sys.argv[2])
 time = int(sys.argv[3])
 
