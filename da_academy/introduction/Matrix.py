@@ -1,6 +1,7 @@
 class Row:
-    def __init__(self, length):
-        self._row = [0 for _ in range(length)]
+    def __init__(self, items):
+        self.length = len(items)
+        self.row = items
 
     @property
     def row(self):
@@ -10,8 +11,8 @@ class Row:
     def row(self, row):
         if not isinstance(row, list):
             raise TypeError('unsupported type')
-        if len(self._row) != len(row):
-            raise ValueError('rows are not the same dimension')
+        if self.length != len(row):
+            raise ValueError('rows are not the same length')
         self._row = row
 
     def __getitem__(self, item):
@@ -20,7 +21,7 @@ class Row:
     def __add__(self, other):
         if not isinstance(other, Row):
             raise TypeError('unsupported operand type')
-        if len(self.row) != len(other.row):
+        if self.length != len(other.row):
             raise ValueError('rows are not the same dimension')
         row = self.row
         other_row = other.row
@@ -32,20 +33,35 @@ class Row:
     def __repr__(self):
         return 'Row {}'.format(self.row)
 
+    def __str__(self):
+        return str(self.row)
+
 
 class Matrix:
     def __init__(self, rows, columns):
         self.rows = rows
         self.columns = columns
-        self.matrix = [Row(columns) for _ in range(rows)]
+        self.matrix = [Row([0 for _ in range(columns)]) for _ in range(rows)]
 
     def __getitem__(self, item):
         return self.matrix[item]
+
+    def __setitem__(self, key, value):
+        if not isinstance(value, Row):
+            raise TypeError('unsupported operand type')
+        if self.columns != len(value):
+            raise ValueError('rows are not the same dimension')
+        self.matrix[key] = value
 
     def __add__(self, other):
         if not isinstance(other, Matrix):
             raise TypeError('unsupported operand type')
         if self.rows != other.rows:
             raise ValueError('matrices are not the same dimension')
-        return [self.matrix[i] + other[i] for i in range(0, len(self.matrix))]
+        return [self.matrix[i] + other[i] for i in range(0, self.columns)]
 
+    def __repr__(self):
+        return 'Matrix {}'.format([repr(self.matrix[x]) for x in range(self.columns)])
+
+    def __str__(self):
+        return str([str(self.matrix[x]) for x in range(self.columns)])
