@@ -1,6 +1,7 @@
 import copy
 from matrix import Matrix
 
+
 class TestMatrix:
 
     matrix1 = Matrix([[1, 2, 3], [2, 3, 4], [3, 4, 5]])
@@ -51,3 +52,15 @@ class TestMatrix:
     def test_adjugate(self):
         matrix = Matrix([[5, -2, 2, 7], [1, 0, 0, 3], [-3, 1, 5, 0], [3, -1, -9, 4]])
         assert matrix.adjugate() == Matrix([[-12, 76, -60, -36], [-56, 208, -82, -58], [4, 4, -2, -10], [4, 4, 20, 12]])
+
+    def test_get_multiple_rows(self):
+        assert self.matrix1.get_multiple_rows(1, 2) == [self.matrix1[1], self.matrix1[2]]
+        assert self.matrix1.get_multiple_rows(0, 2) == [self.matrix1[0], self.matrix1[2]]
+        assert self.matrix2.get_multiple_rows(1, 0) == [self.matrix2[1], self.matrix2[0]]
+        assert self.matrix2.get_multiple_rows(1, 1, 1) == [self.matrix2[1]]
+
+    def test_get_multiple_columns(self):
+        assert self.matrix1.get_multiple_columns(1, 2) == [self.matrix1.get_column(1), self.matrix1.get_column(2)]
+        assert self.matrix1.get_multiple_columns(0, 2) == [self.matrix1.get_column(0), self.matrix1.get_column(2)]
+        assert self.matrix2.get_multiple_columns(1, 0) == [self.matrix2.get_column(1), self.matrix2.get_column(0)]
+        assert self.matrix2.get_multiple_columns(1, 1, 1) == [self.matrix2.get_column(1)]

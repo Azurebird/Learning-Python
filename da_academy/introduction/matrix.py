@@ -1,4 +1,5 @@
 import copy
+from collections import OrderedDict
 
 class Matrix:
     def __init__(self, base_matrix):
@@ -43,7 +44,7 @@ class Matrix:
         return Matrix([
             [
                 sum([
-                    row[x] * other.__get_column(j)[x] for x in range(len(row))
+                    row[x] * other.get_column(j)[x] for x in range(len(row))
                 ]) for j in range(number_columns)
             ] for i, row in enumerate(self.matrix)
         ])
@@ -80,11 +81,16 @@ class Matrix:
     def __cofactor_matrix(self):
         return Matrix([[self.__cofactor(i, j) for j in range(self.columns)] for i in range(self.rows)])
 
-    def __get_column(self, column):
+    def get_column(self, column):
         return [row[column] for row in self.matrix]
 
     def get_multiple_rows(self, *rows):
-        return [self.matrix[row] for row in rows]
+        non_repeated_rows = list(OrderedDict.fromkeys(rows))
+        return [self.matrix[row] for row in non_repeated_rows]
+
+    def get_multiple_columns(self, *columns):
+        non_repeated_columns = list(OrderedDict.fromkeys(columns))
+        return [self.get_column(column) for column in non_repeated_columns]
 
     def scalar_mul(self, scalar):
         return Matrix([[self.matrix[i][j] * scalar for j in range(self.columns)] for i in range(self.rows)])
